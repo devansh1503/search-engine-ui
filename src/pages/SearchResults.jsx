@@ -1,28 +1,9 @@
 import React from "react";
 import SearchBar from "../components/SearchBar";
-
-const results = [
-  {
-    title: "React – A JavaScript library for building user interfaces",
-    link: "https://react.dev",
-    description:
-      "React makes it painless to create interactive UIs. Design simple views for each state in your application.",
-  },
-  {
-    title: "Getting Started with React",
-    link: "https://react.dev/learn",
-    description:
-      "Learn the basics of React, including components, state, and props.",
-  },
-  {
-    title: "React GitHub Repository",
-    link: "https://github.com/facebook/react",
-    description:
-      "The library for web and native user interfaces. Open source maintained by Meta.",
-  },
-];
+import { useSearch } from "../context/SearchContext";
 
 function SearchResults() {
+  const {results} = useSearch();
   return (
     <div
       style={{

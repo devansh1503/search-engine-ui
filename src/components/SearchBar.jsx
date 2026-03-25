@@ -1,8 +1,17 @@
 import React, { useState } from "react";
+import { useSearch } from "../context/SearchContext";
+import { useNavigate } from "react-router";
 
 function SearchBar() {
-  const [value, setValue] = useState("");
+  const {searchQuery, setQuery, onSearch, results} = useSearch();
+  const navigate = useNavigate()
 
+  const searchClick = () => {
+    onSearch()
+    if(results && results.length > 0){
+      navigate("/results");
+    }
+  }
   return (
     <div
       style={{
@@ -41,8 +50,8 @@ function SearchBar() {
       >
         {/* Input */}
         <input
-          value={value}
-          onChange={(e) => setValue(e.target.value)}
+          value={searchQuery}
+          onChange={(e) => setQuery(e.target.value)}
           placeholder="Search the web..."
           style={{
             flex: 1,
@@ -87,6 +96,7 @@ function SearchBar() {
           onMouseUp={(e) => {
             e.currentTarget.style.transform = "scale(1.05)";
           }}
+          onClick={searchClick}
         >
           Search
         </button>
