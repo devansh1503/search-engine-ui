@@ -63,7 +63,7 @@ function SearchResults() {
                 opacity: 0.9,
               }}
             >
-              {result.link}
+              {result.url}
             </div>
 
             <div
@@ -84,7 +84,7 @@ function SearchResults() {
                 lineHeight: "1.6",
               }}
             >
-              {result.description}
+              {result.snippet}
             </div>
           </div>
         ))}

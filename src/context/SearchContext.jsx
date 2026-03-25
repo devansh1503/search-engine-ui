@@ -18,6 +18,7 @@ export const SearchProvider = ({children}) => {
     const onSearch = async () => {
         await searchAPI.query(searchQuery).then((res) => {
             setResults(res.data);
+            setQuery(null)
         }).catch((err)=>{
             setResults(null)
             console.log(err)
