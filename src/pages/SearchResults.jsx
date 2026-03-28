@@ -30,6 +30,7 @@ function SearchResults() {
         {results.map((result, index) => (
           <div
             key={index}
+            onClick={()=>{window.open(result.url, "_blank")}}
             style={{
               padding: "18px 22px",
               borderRadius: "16px",

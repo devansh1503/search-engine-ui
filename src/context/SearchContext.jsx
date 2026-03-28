@@ -1,5 +1,6 @@
 import { createContext, useContext, useState } from "react";
-import { searchAPI } from "../api/ApiService";
+import { autocompleteAPI, searchAPI } from "../api/ApiService";
+import { useNavigate } from "react-router";
 
 const searchContext = createContext();
 
@@ -12,24 +13,38 @@ export const useSearch = () => {
 }
 
 export const SearchProvider = ({children}) => {
-    const [searchQuery, setQuery] = useState(null);
     const [results, setResults] = useState(null);
+    const [suggestions, setSuggestions] = useState([]);
 
-    const onSearch = async () => {
-        await searchAPI.query(searchQuery).then((res) => {
+    const navigate = useNavigate()
+
+    const onSearch = async (value) => {
+        await searchAPI.query(value).then((res) => {
             setResults(res.data);
-            setQuery(null)
+            if(res.data && res.data.length > 0){
+                setSuggestions("")
+                navigate("/results");
+            }
         }).catch((err)=>{
             setResults(null)
             console.log(err)
         })
     }
+
+    const onTypeSuggest = async (val) => {
+        await autocompleteAPI.query(val).then((res) => {
+            setSuggestions(res.data);
+        }).catch((err) => {
+            console.log(err)
+        })
+    }
     const value = {
-        searchQuery,
         results,
-        setQuery,
+        suggestions,
         setResults,
+        setSuggestions,
         onSearch,
+        onTypeSuggest,
     }
 
     return <searchContext.Provider value={value}>

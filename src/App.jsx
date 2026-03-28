@@ -6,16 +6,16 @@ import SearchResults from "./pages/SearchResults"
 function App() {
 
   return (
-    <SearchProvider>
-      <BrowserRouter>
-        <div className="App">
-          <Routes>
-            <Route path='' element={<Home/>}></Route>
-            <Route path='results' element={<SearchResults/>}></Route>
-          </Routes>
-        </div>
-      </BrowserRouter>
-    </SearchProvider>
+    <BrowserRouter>
+      <SearchProvider>
+          <div className="App">
+            <Routes>
+              <Route path='' element={<Home/>}></Route>
+              <Route path='results' element={<SearchResults/>}></Route>
+            </Routes>
+          </div>
+      </SearchProvider>
+    </BrowserRouter>
   )
 }
 

@@ -1,39 +1,30 @@
 import React, { useEffect, useState } from "react";
 import { useSearch } from "../context/SearchContext";
 import { useNavigate } from "react-router";
-import { autocompleteAPI } from "../api/ApiService";
 
 function SearchBar() {
-  const {searchQuery, setQuery, onSearch, results} = useSearch();
-  const [suggestions, setSuggestions] = useState([]);
+  const {
+    onSearch, 
+    results, 
+    suggestions,
+    setSuggestions,
+    onTypeSuggest
+  } = useSearch();
+
   const [activeIndex, setActiveIndex] = useState(-1);
 
-  const suggestionCall = async() => {
-    await autocompleteAPI.query(searchQuery).then((res)=>{
-      setSuggestions(res.data)
-    }).catch((e)=>console.log(e))
-  }
-
-  const selectSuggestion = (value) => {
-    setQuery(value);
-    setSuggestions([]);
-  };
+  const [value, setValue] = useState("");
 
   useEffect(() => {
     const delay = setTimeout(() => {
-      if (searchQuery) suggestionCall();
+      onTypeSuggest(value);
     }, 300);
 
     return () => clearTimeout(delay);
-  }, [searchQuery]);
-
-  const navigate = useNavigate()
+  }, [value]);
 
   const searchClick = () => {
-    onSearch()
-    if(results && results.length > 0){
-      navigate("/results");
-    }
+    onSearch(value);
   }
   return (
     <div
@@ -74,8 +65,8 @@ function SearchBar() {
       >
         {/* Input */}
         <input
-          value={searchQuery}
-          onChange={(e) => setQuery(e.target.value)}
+          value={value}
+          onChange={(e) => {setValue(e.target.value)}}
           placeholder="Search the web..."
           style={{
             flex: 1,
@@ -146,7 +137,10 @@ function SearchBar() {
     {suggestions.map((item, index) => (
         <div
           key={index}
-          onClick={() => selectSuggestion(item)}
+          onClick={() => {
+            setValue(item)
+            setSuggestions(null)
+          }}
           onMouseEnter={() => setActiveIndex(index)}
           style={{
             padding: "12px 16px",
