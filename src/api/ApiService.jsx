@@ -19,7 +19,10 @@ const api_autocomplete = axios.create({
 
 export const searchAPI = {
     query: (q) =>
-        api.get(`/search?query=${encodeURIComponent(q)}`)
+        api.get(`/search?query=${encodeURIComponent(q)}`),
+
+    aisummary: (data, q) =>
+        api.post(`/search/ai-summary?query=${encodeURIComponent(q)}`, data)
 }
 
 export const autocompleteAPI = {

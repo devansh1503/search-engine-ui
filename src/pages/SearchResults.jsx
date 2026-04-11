@@ -1,6 +1,7 @@
 import React from "react";
 import SearchBar from "../components/SearchBar";
 import { useSearch } from "../context/SearchContext";
+import AISummary from "../components/AISummary";
 
 function SearchResults() {
   const {results} = useSearch();
@@ -27,6 +28,7 @@ function SearchResults() {
           gap: "26px",
         }}
       >
+        <AISummary/>
         {results.map((result, index) => (
           <div
             key={index}
@@ -85,7 +87,7 @@ function SearchResults() {
                 lineHeight: "1.6",
               }}
             >
-              {result.snippet}
+              {result.snippet.slice(0, 150)+"..."}
             </div>
           </div>
         ))}

@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useSearch } from "../context/SearchContext";
-import { useNavigate } from "react-router";
 
 function SearchBar() {
   const {
     onSearch, 
-    results, 
     suggestions,
     setSuggestions,
-    onTypeSuggest
+    onTypeSuggest,
+    setQuery,
+    setAiSummary,
   } = useSearch();
 
   const [activeIndex, setActiveIndex] = useState(-1);
@@ -24,6 +24,8 @@ function SearchBar() {
   }, [value]);
 
   const searchClick = () => {
+    setQuery(value);
+    setAiSummary(null);
     onSearch(value);
   }
   return (

@@ -15,6 +15,9 @@ export const useSearch = () => {
 export const SearchProvider = ({children}) => {
     const [results, setResults] = useState(null);
     const [suggestions, setSuggestions] = useState([]);
+    const [aiSummary, setAiSummary] = useState(null);
+    const [query, setQuery] = useState(null);
+    const [loading, setLoading] = useState(false)
 
     const navigate = useNavigate()
 
@@ -31,6 +34,21 @@ export const SearchProvider = ({children}) => {
         })
     }
 
+    const onAISearch = async (data, q) => {
+        setLoading(true)
+        try{
+            const res = await searchAPI.aisummary(data, q)
+            setAiSummary(res.data)
+        }
+        catch(err) {
+            setAiSummary("Error Could Not fetch")
+            console.log(err)
+        }
+        finally {
+            setLoading(false)
+        }
+    }
+
     const onTypeSuggest = async (val) => {
         await autocompleteAPI.query(val).then((res) => {
             setSuggestions(res.data);
@@ -41,10 +59,16 @@ export const SearchProvider = ({children}) => {
     const value = {
         results,
         suggestions,
+        aiSummary,
+        query,
+        loading,
         setResults,
         setSuggestions,
         onSearch,
         onTypeSuggest,
+        onAISearch,
+        setQuery,
+        setAiSummary,
     }
 
     return <searchContext.Provider value={value}>
